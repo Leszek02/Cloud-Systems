@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS tesla_insider_trading (
+    id SERIAL PRIMARY KEY,
     insider_trading varchar(100),
     relationship varchar(100),
     date date,
@@ -10,7 +11,8 @@ CREATE TABLE IF NOT EXISTS tesla_insider_trading (
     sec_form_4 varchar(30)
 );
 
-COPY tesla_insider_trading
-FROM '/TSLA.csv'
-DELIMITER ','
-CSV HEADER;
+COPY tesla_insider_trading 
+    (insider_trading, relationship, date, transaction, cost, shares, value, shares_total, sec_form_4)
+    FROM '/TSLA.csv'
+    DELIMITER ','
+    CSV HEADER;
