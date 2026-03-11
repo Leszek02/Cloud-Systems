@@ -32,5 +32,8 @@ spec:
           timeoutSeconds: 1
           periodSeconds: 3
           failureThreshold: 5
+          volumeMounts:
+          - name: db-volume
+            mountPath: /var/lib/postgresql/data
         
       
