@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from flask import Flask, request
+from flask_cors import CORS
 import psycopg2
 import time
 import json
@@ -17,12 +18,13 @@ class Trading:
     sec_form_4: str
 
 app = Flask(__name__)
+CORS(app)
 connection = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="127.0.0.1", port=5433)
 TABLE_COLUMNS = {"insider_trading", "relationship", "date", "transaction", "cost", "shares", "value", "shares_total", "sec_form_4"} 
 
 @app.route("/healthcheck", methods=['GET'])
 def healthcheck():
-    return 200
+    return "OK", 200
 
 # localhost:127.0.0.1/tradings?filter=value
 @app.route("/tradings", methods=['GET'])

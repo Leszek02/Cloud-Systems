@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS tesla_insider_trading (
     id SERIAL PRIMARY KEY,
     insider_trading varchar(100),
     relationship varchar(100),
-    date date,
+    date date, -- TODO: wrong datatype here
     transaction varchar(20),
     cost decimal(6,2),
     shares varchar(20),

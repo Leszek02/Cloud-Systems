@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tesla Insider Trading</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./script.js"></script>
+</head>
+<body>
+  <h1>Tesla Insider Trading</h1>
+
+  <nav>
+    <a href="#" id="nav-get" class="active" onclick="showTab('get')">GET Tradings</a>
+    <a href="#" id="nav-post" onclick="showTab('post')">POST Trading</a>
+    <a href="#" id="nav-put" onclick="showTab('put')">PUT Trading</a>
+  </nav>
+
+
+  <div id="tab-get" class="tab">
+    <h2>Get Tradings</h2>
+    <button onclick="loadTradings()">Load All</button>
+    <br><br>
+    <div class="inline-row">
+      <label>Filter column: <input id="filterCol" placeholder="e.g. relationship"></label>
+      <label>Value: <input id="filterVal" placeholder="e.g. CEO"></label>
+      <button onclick="loadFiltered()">Filter</button>
+    </div>
+    <div id="get_result"></div>
+  </div>
+
+
+  <div id="tab-post" class="tab" style="display:none">
+    <h2>Add Trading</h2>
+    <label>Insider: <input id="p_insider"></label>
+    <label>Relationship: <input id="p_relationship"></label>
+    <label>Date: <input id="p_date" placeholder="YYYY-MM-DD"></label>
+    <label>Transaction: <input id="p_transaction"></label>
+    <label>Cost: <input id="p_cost" type="number"></label>
+    <label>Shares: <input id="p_shares"></label>
+    <label>Value: <input id="p_value"></label>
+    <label>Shares Total: <input id="p_shares_total"></label>
+    <label>SEC Form 4: <input id="p_sec_form_4"></label>
+    <button onclick="postTrading()">Submit</button>
+    <pre id="post_result"></pre>
+  </div>
+
+ 
+  <div id="tab-put" class="tab" style="display:none">
+    <h2>Update Trading</h2>
+    <label>ID: <input id="u_id" type="number"></label>
+    <label>Insider: <input id="u_insider"></label>
+    <label>Relationship: <input id="u_relationship"></label>
+    <label>Date: <input id="u_date" placeholder="YYYY-MM-DD"></label>
+    <label>Transaction: <input id="u_transaction"></label>
+    <label>Cost: <input id="u_cost" type="number"></label>
+    <label>Shares: <input id="u_shares"></label>
+    <label>Value: <input id="u_value"></label>
+    <label>Shares Total: <input id="u_shares_total"></label>
+    <label>SEC Form 4: <input id="u_sec_form_4"></label>
+    <button onclick="putTrading()">Update</button>
+    <pre id="put_result"></pre>
+  </div>
+
+</body>
+</html>
