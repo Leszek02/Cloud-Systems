@@ -20,6 +20,10 @@ app = Flask(__name__)
 connection = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="127.0.0.1", port=5433)
 TABLE_COLUMNS = {"insider_trading", "relationship", "date", "transaction", "cost", "shares", "value", "shares_total", "sec_form_4"} 
 
+@app.route("/healthcheck", methods=['GET'])
+def healthcheck():
+    return 200
+
 # localhost:127.0.0.1/tradings?filter=value
 @app.route("/tradings", methods=['GET'])
 def get_tradings_filtered():
