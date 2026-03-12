@@ -16,12 +16,12 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   location   = "eu-east-5"
   cluster    = google_container_cluster.primary.name
   node_count = 1
-  spot       = true
+
 
   node_config {
     preemptible  = true
     machine_type = "n1-standard-2"
-
+    spot       = true
     service_account = google_service_account.default.email
   }
 }

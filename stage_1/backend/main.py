@@ -1,9 +1,11 @@
+from dotenv import load_dotenv
 from dataclasses import dataclass
 from flask import Flask, request
 from flask_cors import CORS
 import psycopg2
 import time
 import json
+import os
 
 @dataclass
 class Trading:
@@ -19,7 +21,12 @@ class Trading:
 
 app = Flask(__name__)
 CORS(app)
-connection = psycopg2.connect(database="postgres", user="postgres", password="postgres", host="127.0.0.1", port=5433)
+
+load_dotenv()
+
+PORT = os.getenv('PORT') if 'PORT' in os.environ else os.environ.get('PORT')
+HOST = os.getenv('HOST') if 'HOST' in os.environ else os.environ.get('HOST')
+connection = psycopg2.connect(database="postgres", user="postgres", password="postgres", host=HOST, port=PORT)
 TABLE_COLUMNS = {"insider_trading", "relationship", "date", "transaction", "cost", "shares", "value", "shares_total", "sec_form_4"} 
 
 @app.route("/healthcheck", methods=['GET'])
@@ -29,6 +36,7 @@ def healthcheck():
 # localhost:127.0.0.1/tradings?filter=value
 @app.route("/tradings", methods=['GET'])
 def get_tradings_filtered():
+    print("Received GET request")
     try:
         args = request.args.to_dict()
         cursor = connection.cursor()
@@ -51,6 +59,7 @@ def get_tradings_filtered():
 
 @app.route("/tradings", methods=['POST'])
 def post_traidings():
+    print("Received POST request")
     try:
         cursor = connection.cursor()
         json_obj = json.loads(request.data)
@@ -69,6 +78,7 @@ def post_traidings():
 
 @app.route("/tradings/<int:id>", methods=['PUT'])
 def put_trading(id):
+    print("Received PUT request")
     try:
         cursor = connection.cursor()
         json_obj = json.loads(request.data)
@@ -92,4 +102,4 @@ def put_trading(id):
         return "Couldn't update the resource", 500
 
 
-app.run()
+app.run(host="0.0.0.0", port=5000)

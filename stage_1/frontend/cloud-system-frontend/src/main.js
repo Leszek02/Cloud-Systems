@@ -1,5 +1,12 @@
-const BASE = "http://127.0.0.1:5000";
+console.log(import.meta.env.VITE_HOST) // "123"
+
+const BASE = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
 const tabs = ["get", "post", "put"];
+
+document.querySelector(".load-trading").addEventListener("click", loadTradings)
+document.querySelector(".load-filtered").addEventListener("click", loadFiltered)
+document.querySelector(".post-trading").addEventListener("click", postTrading)
+document.querySelector(".put-trading").addEventListener("click", putTrading)
 
 function showTab(name) {
     tabs.forEach(t => {

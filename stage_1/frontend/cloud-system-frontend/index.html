@@ -3,7 +3,6 @@
 <head>
   <title>Tesla Insider Trading</title>
   <link rel="stylesheet" href="./styles.css">
-  <script src="./script.js"></script>
 </head>
 <body>
   <h1>Tesla Insider Trading</h1>
@@ -17,12 +16,12 @@
 
   <div id="tab-get" class="tab">
     <h2>Get Tradings</h2>
-    <button onclick="loadTradings()">Load All</button>
+    <button class="load-trading">Load All</button>
     <br><br>
     <div class="inline-row">
       <label>Filter column: <input id="filterCol" placeholder="e.g. relationship"></label>
       <label>Value: <input id="filterVal" placeholder="e.g. CEO"></label>
-      <button onclick="loadFiltered()">Filter</button>
+      <button class="load-filtered">Filter</button>
     </div>
     <div id="get_result"></div>
   </div>
@@ -39,7 +38,7 @@
     <label>Value: <input id="p_value"></label>
     <label>Shares Total: <input id="p_shares_total"></label>
     <label>SEC Form 4: <input id="p_sec_form_4"></label>
-    <button onclick="postTrading()">Submit</button>
+    <button class="post-trading">Submit</button>
     <pre id="post_result"></pre>
   </div>
 
@@ -56,9 +55,10 @@
     <label>Value: <input id="u_value"></label>
     <label>Shares Total: <input id="u_shares_total"></label>
     <label>SEC Form 4: <input id="u_sec_form_4"></label>
-    <button onclick="putTrading()">Update</button>
+    <button class="put-trading">Update</button>
     <pre id="put_result"></pre>
   </div>
 
+  <script src="./src/main.js" type="module"></script>
 </body>
 </html>
