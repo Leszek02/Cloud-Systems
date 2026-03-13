@@ -42,6 +42,9 @@ services:
     build:
       context: ..
       dockerfile: ./stage_3/frontend/Dockerfile
+      args:
+        VITE_HOST: "127.0.0.1"
+        VITE_PORT: 5000
     container_name: "cloud-frontend"
     depends_on:
       db: 
