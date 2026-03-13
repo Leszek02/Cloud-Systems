@@ -4,3 +4,8 @@ node_modules
 
 postgres-data
 .env
+
+.terraform*
+terraform*
+*.tfvars
+plan*
