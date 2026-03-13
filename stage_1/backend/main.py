@@ -24,9 +24,9 @@ CORS(app)
 
 load_dotenv()
 
-PORT = os.getenv('PORT') if 'PORT' in os.environ else os.environ.get('PORT')
-HOST = os.getenv('HOST') if 'HOST' in os.environ else os.environ.get('HOST')
-connection = psycopg2.connect(database="postgres", user="postgres", password="postgres", host=HOST, port=PORT)
+DATABASE_PORT = os.getenv('DATABASE_PORT') if 'DATABASE_PORT' in os.environ else os.environ.get('DATABASE_PORT')
+DATABASE_HOST = os.getenv('DATABASE_HOST') if 'DATABASE_HOST' in os.environ else os.environ.get('DATABASE_HOST')
+connection = psycopg2.connect(database="postgres", user="postgres", password="postgres", host=DATABASE_HOST, port=DATABASE_PORT)
 TABLE_COLUMNS = {"insider_trading", "relationship", "date", "transaction", "cost", "shares", "value", "shares_total", "sec_form_4"} 
 
 @app.route("/healthcheck", methods=['GET'])

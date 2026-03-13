@@ -10,12 +10,13 @@ services:
     volumes:
      - ./postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ] # Probably should adjust parameters here
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
-      
+    networks:
+      - database-network   
   backend:
     image: cloud-systems/backend
     build:
@@ -26,28 +27,39 @@ services:
       db: 
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl", "127.0.0.1:5000/healthcheck"]
+      test: ["CMD", "wget", "-q", "http://127.0.0.1:5000/healthcheck"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
     environment:
-      PORT: 5432
-      HOST: "db"
-    ports: 
-     - "0.0.0.0:5000:5000"
+      DATABASE_PORT: 5432
+      DATABASE_HOST: "db"
+    networks:
+      - backend-network
+      - database-network
         
   frontend:
     image: cloud-systems/frontend
     build:
       context: ..
       dockerfile: ./stage_3/frontend/Dockerfile
-      args:
-        VITE_HOST: "127.0.0.1"
-        VITE_PORT: 5000
     container_name: "cloud-frontend"
+    environment:
+      BACKEND_HOST: "backend"
+      BACKEND_PORT: 5000
     depends_on:
-      db: 
+      backend: 
         condition: service_healthy
     ports:
       - "0.0.0.0:8080:80"
+    networks:
+      - backend-network
+
+
+
+networks:
+  backend-network:
+    driver: bridge
+  database-network:
+    driver: bridge

@@ -1,12 +1,16 @@
 console.log(import.meta.env.VITE_HOST) // "123"
 
-const BASE = `http://${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`;
+const BASE = `api`;
 const tabs = ["get", "post", "put"];
 
 document.querySelector(".load-trading").addEventListener("click", loadTradings)
 document.querySelector(".load-filtered").addEventListener("click", loadFiltered)
 document.querySelector(".post-trading").addEventListener("click", postTrading)
 document.querySelector(".put-trading").addEventListener("click", putTrading)
+
+document.querySelector(".show-get").addEventListener("click", () => showTab("get"))
+document.querySelector(".show-post").addEventListener("click", () =>  showTab("post"))
+document.querySelector(".show-put").addEventListener("click", () =>  showTab("put"))
 
 function showTab(name) {
     tabs.forEach(t => {
