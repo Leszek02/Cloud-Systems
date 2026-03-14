@@ -6,8 +6,9 @@ locals {
   ])
 }
 
-resource "google_project_service" "project" {
+resource "google_project_service" "project-services" {
   for_each = local.services
   project  = var.project_id
   service  = each.value
 }
+
