@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: database-persistent-volume
-spec:
-  storageClassName: database-volume-class
-  claimRef:
-    name: database-persistent-volume-claim
-    namespace: default

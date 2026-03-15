@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloud-database
+  namespace: database
   labels:
     app: cloud-database
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: cloud-database
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: cloud-database
-        image: database:1.0.0
+        image: postgres:15.17
         ports:
         - containerPort: 5432
         resources:
@@ -24,16 +25,32 @@ spec:
             cpu: "500m"
             memory: "800Mi"
           limits: *requests
+        env:
+          - name: POSTGRES_PASSWORD
+            value: "postgres"
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_DB
+            value: "postgres"
         livenessProbe:
           exec:
             command:
-            - ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+            - pg_isready
+            - -U
+            - postgres
+            - -d
+            - postgres
           initialDelaySeconds: 10
           timeoutSeconds: 1
           periodSeconds: 3
           failureThreshold: 5
-          volumeMounts:
-          - name: db-volume
-            mountPath: /var/lib/postgresql/data
+        volumeMounts:
+        - name: db-volume
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres 
+      volumes:
+      - name: db-volume
+        persistentVolumeClaim:
+          claimName: database-persistent-volume-claim 
         
       

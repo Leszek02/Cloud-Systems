@@ -1,40 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud-backend
-  namespace: backend
+  name: cloud-frontend
+  namespace: frontend
   labels:
-    app: cloud-backend
+    app: cloud-frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: cloud-backend
+      app: cloud-frontend
   template:
     metadata:
       labels:
-        app: cloud-backend
+        app: cloud-frontend
     spec:
       containers:
-      - name: cloud-backend
-        image: backend:latest
+      - name: cloud-frontend
+        image: frontend:latest
         ports:
         - name: main-port
-          containerPort: 5000
+          containerPort: 80
         resources:
           requests: &requests
             cpu: "100m"
-            memory: "500Mi"
+            memory: "400Mi"
           limits: *requests
         env:
-          - name: DATABASE_PORT
-            value: "5432"
-          - name: DATABASE_HOST
-            value: "database-service.database.svc.cluster.local"
+          - name: BACKEND_PORT
+            value: "5000"
+          - name: BACKEND_HOST
+            value: "backend-service.backend.svc.cluster.local"
         livenessProbe:
           httpGet:
-            path: /healthcheck
-            port: main-port
+            path: /
+            port: 80
           initialDelaySeconds: 10
           timeoutSeconds: 1
           periodSeconds: 3
