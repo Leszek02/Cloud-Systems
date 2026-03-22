@@ -1,6 +1,7 @@
-console.log(import.meta.env.VITE_HOST) // "123"
-
-const BASE = `api`;
+if (import.meta.env.VITE_BACKEND_HOST)
+  var BASE = `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
+else
+  var BASE = `api`;
 const tabs = ["get", "post", "put"];
 
 document.querySelector(".load-trading").addEventListener("click", loadTradings)

@@ -1,0 +1,60 @@
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name:
+          - postgresql
+          - postgresql-contrib
+          - python3-psycopg2
+        state: present
+        update_cache: yes
+
+    - name: Ensure PostgreSQL is running
+      service:
+        name: postgresql
+        state: started
+        enabled: true
+
+    - name: Get PostgreSQL version
+      command: ls /etc/postgresql
+      register: pg_version
+
+    - name: Copy CSV to VM
+      copy:
+        src: ../../stage_1/database/TSLA.csv
+        dest: /TSLA.csv
+
+    - name: Copy SQL script to VM
+      copy:
+        src: ../../stage_1/database/database.sql
+        dest: /database.sql
+
+    - name: Run SQL script
+      become_user: postgres
+      command: psql -d postgres -f /database.sql #TODO: Here problably need to run it as postgres user
+
+    - name: Set password for postgres user
+      become_user: postgres
+      community.postgresql.postgresql_user:
+        name: postgres
+        password: postgres
+
+    - name: Ensure PostgreSQL is listening on all interfaces
+      lineinfile:
+        path: /etc/postgresql/{{ pg_version.stdout_lines[0] }}/main/postgresql.conf
+        regexp: '^#?listen_addresses'
+        line: "listen_addresses = '*'"
+        backrefs: yes
+
+    - name: Allow remote connections
+      lineinfile:
+        path: /etc/postgresql/{{ pg_version.stdout_lines[0] }}/main/pg_hba.conf
+        line: "host all all 0.0.0.0/0 md5"
+        create: yes
+
+    - name: Restart PostgreSQL
+      service:
+        name: postgresql
+        state: restarted

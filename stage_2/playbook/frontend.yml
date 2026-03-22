@@ -1,0 +1,67 @@
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Install curl
+      apt:
+        name:
+          - curl
+        state: present
+        update_cache: yes
+
+    - name: Install Node.js 22
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+        apt-get install -y nodejs
+      args:
+        creates: /usr/bin/node
+
+    - name: Copy frontend code to VM
+      synchronize:
+        src: ../../stage_1/frontend/cloud-system-frontend/
+        dest: /frontend/
+        rsync_opts:
+          - "--exclude=node_modules"
+          - "--exclude=dist"
+          - "--exclude=.dockerignore"
+          - "--exclude=.gitignore"
+
+    - name: Install npm dependencies
+      command: npm install
+      args:
+        chdir: /frontend
+
+    - name: Create env file
+      copy:
+        dest: /frontend/.env
+        content: |
+          VITE_BACKEND_HOST=192.168.61.11
+          VITE_BACKEND_PORT=5000
+
+    - name: Create systemd service file
+      copy:
+        dest: /etc/systemd/system/frontend.service
+        content: |
+          [Unit]
+          Description=Frontend dev server
+          After=network.target
+
+          [Service]
+          User=root
+          WorkingDirectory=/frontend
+          ExecStart=npm run dev -- --host 0.0.0.0 --port 8080
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable and start frontend service
+      systemd:
+        name: frontend
+        state: started
+        enabled: yes
