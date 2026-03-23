@@ -17,7 +17,7 @@
         name: rsync
         state: present
 
-    - name: Copy application code to VM 2
+    - name: Copy application code to VM
       synchronize:
         src: ../../stage_1/backend/
         dest: /backend/

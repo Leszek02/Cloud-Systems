@@ -27,7 +27,7 @@ services:
       db: 
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-q", "http://127.0.0.1:5000/healthcheck"]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:5000/healthcheck"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -48,6 +48,12 @@ services:
     environment:
       BACKEND_HOST: "backend"
       BACKEND_PORT: 5000
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     depends_on:
       backend: 
         condition: service_healthy
@@ -55,7 +61,7 @@ services:
       - "0.0.0.0:8080:80"
     networks:
       - backend-network
-
+# TODO: add healthcheck here
 
 networks:
   backend-network:

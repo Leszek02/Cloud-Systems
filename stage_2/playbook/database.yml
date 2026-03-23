@@ -33,7 +33,7 @@
 
     - name: Run SQL script
       become_user: postgres
-      command: psql -d postgres -f /database.sql #TODO: Here problably need to run it as postgres user
+      command: psql -d postgres -f /database.sql
 
     - name: Set password for postgres user
       become_user: postgres

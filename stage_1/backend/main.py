@@ -54,7 +54,7 @@ def get_tradings_filtered():
 
     except Exception as e:
         print(f"Error occured: {e}")
-        return "Couldn't load the resource", 500
+        return [("Couldn't load the resource")], 500
 
 
 @app.route("/tradings", methods=['POST'])

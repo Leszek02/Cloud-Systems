@@ -11,19 +11,19 @@ resource "google_container_cluster" "cloud-systems-cluster" {
 
   remove_default_node_pool = true
   initial_node_count       = 1
-  deletion_protection = false
+  deletion_protection      = false
 
   node_config {
-    boot_disk { 
+    boot_disk {
       size_gb = 20
     }
     spot = true
   }
-    cluster_autoscaling {
-      auto_provisioning_defaults {
-        disk_size = 20
-      }
+  cluster_autoscaling {
+    auto_provisioning_defaults {
+      disk_size = 20
     }
+  }
 }
 
 resource "google_container_node_pool" "cloud-systems-node-pool" {
@@ -36,11 +36,11 @@ resource "google_container_node_pool" "cloud-systems-node-pool" {
     machine_type    = "n1-standard-2"
     spot            = true
     service_account = google_service_account.k8s_service_account.email
-    disk_size_gb = 20
+    disk_size_gb    = 20
   }
   autoscaling {
     min_node_count = 0
-    max_node_count = 2 
+    max_node_count = 2
   }
 }
 

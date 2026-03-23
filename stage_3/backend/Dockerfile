@@ -10,4 +10,4 @@ WORKDIR /app
 
 COPY stage_1/backend/main.py main.py
 
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["python3","main.py"]
